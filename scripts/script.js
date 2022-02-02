@@ -18,15 +18,15 @@ function playRound(playerSelection, computerSelection) {
     (playerSelectionLowerCase === "paper" &&
       computerSelectionLowerCase === "rock")
   ) {
-    alert(`You Win! ${playerSelection} beats ${computerSelection}`);
+    result.textContent = `You Win! ${playerSelection} beats ${computerSelection}`;
     return [1, 0];
   }
   // draw conditions
   else if (playerSelectionLowerCase == computerSelectionLowerCase) {
-    alert(`Its a Draw!`);
+    result.textContent = `Its a Draw!`;
     return [0, 0];
   } else {
-    alert(`You Lose! ${computerSelection} beats ${playerSelection}`);
+    result.textContent = `You Lose! ${computerSelection} beats ${playerSelection}`;
     return [0, 1];
   }
 }
@@ -44,7 +44,7 @@ function game() {
         playerSelection.toLowerCase() !== "paper" &&
         playerSelection.toLowerCase() !== "scissors"
       ) {
-        alert("Please choose either Rock , Paper or Scissors");
+        console.log("Please choose either Rock , Paper or Scissors");
       }
     } while (
       playerSelection.toLowerCase() !== "rock" &&
@@ -67,6 +67,46 @@ function game() {
   } else {
     resultString = "You Lose!";
   }
-  alert(scoreString + " " + resultString);
+  result.textContent = scoreString + " " + resultString;
 }
-game();
+let score = [0, 0];
+const result = document.querySelector("#result");
+const scoreDiv = document.querySelector("#score");
+
+const rockBtn = document.querySelector("#rock");
+rockBtn.addEventListener("click", () => {
+  let result = playRound("rock", computerPlay());
+  score[0] += result[0];
+  score[1] += result[1];
+  checkWin();
+});
+const paperBtn = document.querySelector("#paper");
+paperBtn.addEventListener("click", () => {
+  let result = playRound("paper", computerPlay());
+  score[0] += result[0];
+  score[1] += result[1];
+  checkWin();
+});
+const scissorsBtn = document.querySelector("#scissors");
+scissorsBtn.addEventListener("click", () => {
+  let result = playRound("scissors", computerPlay());
+  score[0] += result[0];
+  score[1] += result[1];
+  checkWin();
+});
+function checkWin() {
+  if (score[0] === 5) {
+    scoreDiv.textContent = `You :       ${score[0]}-${score[1]}       :AI.
+    You defeated the AI`;
+    rockBtn.disabled = true;
+    paperBtn.disabled = true;
+    scissorsBtn.disabled = true;
+  } else if (score[1] === 5) {
+    scoreDiv.textContent = `You :       ${score[0]}-${score[1]}       :AI.
+    The AI has taken over the world!`;
+
+    rockBtn.disabled = true;
+    paperBtn.disabled = true;
+    scissorsBtn.disabled = true;
+  }
+}
